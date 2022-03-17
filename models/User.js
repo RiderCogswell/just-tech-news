@@ -1,5 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
+const bcrypt = require('bcrypt');
 
 // create our User model * User inherits all funcitonality the Model class has
 class User extends Model {}
@@ -45,18 +46,38 @@ User.init(
         }
     },
     {
-    // TABLE CONFIGURATION OPTIONS GO HERE (https://sequelize.org/v5/manual/models-definition.html#configuration))
+        hooks: {
+            // set up beforeCreate lifecycle "hook" functionality
+            async beforeCreate(newUserData) {
+                // 10 = saltRound value === 10 rounds of hashing
+                newUserData.password = await bcrypt.hash(newUserData.password, 10);
+                return newUserData;
+            },
+            // same as ^^ => easier because less declared variables
+            // beforeCreate(userData) {
+            //     return bcrypt.hash(userData.password, 10).then(newUserData => {
+            //       return newUserData
+            //     });
+            // }
 
-    // pass in our imported sequelize connection (the direct connection to our database)
-    sequelize,
-    // don't automatically create createdAt/updatedAt timestamp fields
-    timestamps: false,
-    // don't pluralize name of database table
-    freezeTableName: true,
-    // use underscores instead of camel-casing (i.e. `comment_text` and not `commentText`)
-    underscored: true,
-    // make it so our model name stays lowercase in the database
-    modelName: 'user'
+            // set up beforeUpdate lifecycle hook functionlity
+            async beforeUpdate(updatedUserData) {
+                updatedUserData.password = await bcrypt.hash(updatedUserData.password, 10);
+                return updatedUserData;
+            }
+        },
+        // TABLE CONFIGURATION OPTIONS GO HERE (https://sequelize.org/v5/manual/models-definition.html#configuration))
+        
+        // pass in our imported sequelize connection (the direct connection to our database)
+        sequelize,
+        // don't automatically create createdAt/updatedAt timestamp fields
+        timestamps: false,
+        // don't pluralize name of database table
+        freezeTableName: true,
+        // use underscores instead of camel-casing (i.e. `comment_text` and not `commentText`)
+        underscored: true,
+        // make it so our model name stays lowercase in the database
+        modelName: 'user'
     }
 );
 
