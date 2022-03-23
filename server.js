@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 // turn on routes 
 app.use(routes);
 
-// turn on connection to db and server
+// turn on connection to db and server ** by forcing false, we make the tables recreate if there are any association changes like DROP TABLE IF EXISTS
 sequelize.sync({ force: false }).then(() => {
     app.listen(PORT, () => console.log('Now listening'));
 });
