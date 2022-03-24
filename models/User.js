@@ -1,7 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
 const sequelize = require('../config/connection');
-const { up } = require('inquirer/lib/utils/readline');
 
 // create our User model * User inherits all funcitonality the Model class has
 class User extends Model {
