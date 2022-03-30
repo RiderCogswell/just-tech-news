@@ -4,6 +4,7 @@ const Sequelize = require('sequelize');
 // we dont need to save to a variable because all we need it to do is run when we use connection.js
 require('dotenv').config();
 
+// must be let since it will be changed
 let sequelize;
 
 if (process.env.JAWSDB_URL) {
