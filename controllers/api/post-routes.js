@@ -17,7 +17,13 @@ router.get('/', (req, res) => {
         // comment model
         {
             model: Comment, 
-            attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+            attributes: [
+                'id', 
+                'comment_text', 
+                'post_id', 
+                'user_id', 
+                'created_at'
+            ],
             include: {
                 // *******comment model includes the User model itself so it can attach the username to the comment
                 model: User,
@@ -148,14 +154,14 @@ router.put('/:id', (req, res) => {
     )
     .then(dbPostData => {
         if (!dbPostData) {
-            res.json(404).json({ message: 'No user found with this id' });
+            res.status(404).json({ message: 'No user found with this id' });
             return;
         }
         res.json(dbPostData);
     })
     .catch(err => {
         console.log(err);
-        res.json(500).json(err);
+        res.status(500).json(err);
     });
 });
 
@@ -168,7 +174,7 @@ router.delete('/:id', (req, res) => {
     })
     .then(dbPostData => {
         if (!dbPostData) {
-            res.status(404) .json({ message: 'No post found with this id' });
+            res.status(404).json({ message: 'No post found with this id' });
             return;
         }
         res.json(dbPostData);
