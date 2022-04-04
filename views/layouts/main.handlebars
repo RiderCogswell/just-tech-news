@@ -16,6 +16,8 @@
                     <a href="/">Just Tech News</a>
                 </h1>
                 <nav>
+                    {{!-- since logout does not need its own page, we don't need a link, so we use a button --}}
+                    <button id="logout" class="btn-no-style">logout</button>
                     <a href="/login">login</a>
                 </nav>
             </header>
@@ -26,7 +28,8 @@
                 Thanks for visiting!
             </footer>
         </div>
-
+        
+        <script src="/javascript/logout.js"></script>
     </body>
 
 </html>

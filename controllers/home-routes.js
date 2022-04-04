@@ -3,6 +3,7 @@ const sequelize = require('../config/connection');
 const { Post, User, Comment } = require('../models');
 
 router.get('/', (req, res) => {
+    console.log(req.session);
     // since we are connected to a template engine we can ujse res.render instead of send or sendFile
     Post.findAll({
         attributes: [
@@ -41,7 +42,12 @@ router.get('/', (req, res) => {
 });
 
 // login
-router.get('/login', (req, res) => {
+router.get('/login', (req, res) => {  
+    if (req.session.loggedIn) {
+        res.redirect('/');
+        return;
+    }
+
     res.render('login');
 });
 
