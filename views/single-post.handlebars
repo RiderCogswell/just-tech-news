@@ -1,14 +1,6 @@
 <article class="post">
-    <div class="title">
-        <a href="{{post.post_url}}" target="_blank">{{post.title}}</a>
-        <span>({{post.post_url}})</span>
-    </div>
-    <div class="meta">
-        {{post.vote_count}} point(s) by {{post.user.username}} on
-        {{post.created_at}}
-        |
-        <a href="/post/{{post.id}}">{{post.comments.length}} comment(s)</a>
-    </div>
+    {{!-- when we pass in post we pass in the all the properties of the object, so we must update variables to not include post --}}
+    {{> post-info post }}
 </article>
 
 {{!-- variables that are passed to view templates are automatically passed to the main layout --}}
@@ -26,20 +18,8 @@
 </form>
 {{/if}}
 
-<div class="comments">
-    {{!-- # start --}}
-    {{#each post.comments}}
-    <section class="comment">
-        <div class="meta">
-            {{user.username}} on {{created_at}}
-        </div>
-        <div class="text">
-            {{comment_text}}
-        </div>
-    </section>
-    {{!-- / stop --}}
-    {{/each}}
-</div>
+{{!-- insert --}}
+{{> comments post.comments }}
 
 {{!-- only if logged in  --}}
 {{#if loggedIn}}

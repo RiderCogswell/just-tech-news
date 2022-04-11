@@ -2,9 +2,11 @@
 const routes = require('./controllers');
 const path = require('path');
 const express = require('express');
+const helpers = require('./utils/helpers');
 // set handlebars as template engine
 const exphbs = require('express-handlebars');
-const hbs = exphbs.create({});
+// pass in helpers to handlebars
+const hbs = exphbs.create({ helpers });
 const session = require('express-session');
 
 // necessary
