@@ -18,6 +18,7 @@
                 <nav>
                     {{!-- since logout does not need its own page, we don't need a link, so we use a button --}}
                     {{#if loggedIn}}
+                    <a href="/dashboard">dashboard</a>
                     <button id="logout" class="btn-no-style">logout</button>
                     {{else}}
                     <a href="/login">login</a>

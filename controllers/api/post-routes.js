@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const sequelize = require('../../config/connection');
 const { Post, User, Vote, Comment } = require('../../models');
+const withAuth = require('../../utils/auth');
 // GET all users
 router.get('/', (req, res) => {
     Post.findAll({
@@ -85,11 +86,11 @@ router.get('/:id', (req, res) => {
 });
 
 // POST a post
-router.post('/', (req, res) => {
+router.post('/', withAuth, (req, res) => {
     Post.create({
         title: req.body.title,
         post_url: req.body.post_url,
-        user_id: req.body.user_id
+        user_id: req.session.user_id
     })
     .then(dbPostData => res.json(dbPostData))
     .catch(err => {
@@ -100,7 +101,7 @@ router.post('/', (req, res) => {
 
 // PUT /api/posts/upvote
 // must be above the /:id PUT route or it will think 'upvote' is valid for /:id
-router.put('/upvote', (req, res) => {
+router.put('/upvote', withAuth, (req, res) => {
     if (req.session) {
         // pass session id along with all destructured properties on req.body
         Post.upvote({ ...req.body, user_id: req.session.user_id }, { Vote, Comment, User })
@@ -143,7 +144,7 @@ router.put('/upvote', (req, res) => {
 });
 
 // update a post
-router.put('/:id', (req, res) => {
+router.put('/:id', withAuth, (req, res) => {
     Post.update(
         {
             title: req.body.title
@@ -168,7 +169,7 @@ router.put('/:id', (req, res) => {
 });
 
 // DELETE a post
-router.delete('/:id', (req, res) => {
+router.delete('/:id', withAuth, (req, res) => {
     Post.destroy({
         where: {
             id: req.params.id
